@@ -1,0 +1,56 @@
+== WHAT ==
+  A multi-platform TCP/IP v4 Stack Testing Tool,
+
+  As a testing tool, it can perform regression, protocol conformance, and fuzz tests. The tool may also be employed as an aid to protocol developers and both testing and debugging of firewalls/routers.
+
+
+== USING ==
+  It's built on top of PCS(Packet Construction Set)
+
+  "PCS is a set of Python modules and objects that make building network protocol code easier for the protocol developer. The core of the system is the pcs module itself which provides the necessary functionality to create classes that implement packets." [[http://pcs.sourceforge.net/|PCS]]
+
+  PCS enables testing at OSI layers 3, 4, and 5.
+
+
+== HOW ==
+  Tcptest mainly is a python module and one script for each test covered (more then one per script often)
+  The module count with methods acting as fasteners, doing things like (a)three way handshake, (b)active/passive close and (c)several createXX and assertXX, where XX=(ip, tcp, rst, urg, fin, syn, psh, so on...)
+  As the tests are being created, the number of 'fasteners' are growing, turning each moment easier to create new tests.
+
+
+== PHILOSOPHY ==
+  Use of small tests. So we can cover a wide range of traffics, events and transitions predetermined separately.
+
+  The development would be like a protocol, but without covering all possible events and transitions, only traffic previously determined.
+
+  Instead of targeting a TCP Finite State Machine (FSM) like the implementation of TCP/IP protocols, the development will be based towards flow of packets, where traffic is composed of packets that are sent and received in a previously registered way.
+
+== THE FOLLOWING TESTS WILL BE INITIALLY COVERED ==
+
+ 1. Three-way handshake [done]
+ 2. Reset from closed state [done]
+ 3. Reset from non syncronized state [done]
+ 4. Reset from syncronized state [done]
+ 5. Sliding Window Protocol
+ 6. Urgent Pointer
+ 7. TCP Options establishment
+ 8. Selective Acknowledgments
+ 9. TCP Timestamps
+ 10. Time-wait configuration [done]
+ 11. Connection close [done]
+ 12. Simultaneous close
+ 13. Receive Window Size Advertisement
+ 14. Transmit Window Size Advertisement
+ 15. Support Partner’s Shrinking Window
+ 16. Silly Window Syndrome Avoidance
+ 17. Zero Window Handling
+ 18. Receive ACKs, RSTs, and URGs while Window is Zero
+ 19. Zero window Probing
+
+== MENTOR ==
+ * George Neville-Neil
+
+
+== STUDENT ==
+ * Victor Hugo Bilouro
+

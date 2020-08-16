@@ -1,0 +1,23 @@
+use the last version of pcs
+create connection establishment options test
+
+Think about:
+    to be able make synchronous tests, will be wonderful remotely
+    connect via pcap. eg. thatsideoutput = pcs.PcapConnector(remote,"ed0")  
+
+    self.output = { self.thisside : pcs.PcapConnector("ed0") , \
+                    self.thatside : pcs.PcapConnector(remoteip,"ed0") } 
+
+    test this.packet == that.packet will be possible
+
+Think about:
+    self.ethersrc = ethernet.ether_atob("00:1c:42:47:3f:cd") 
+    It should be automatic
+      * may be extend Ethernet to receive ip as constructor arg
+	  ethernet( ip ) 
+      * may be as a utility method
+	  ethernet().configue(ip)     
+
+Rewrite method that receives data from socket, with timeout. For some tests we have to listen for a packet only to certify the DUT doesn't send anything back.
+
+Use the latest version of pcs from http://neville-neil.com/hg

@@ -1,0 +1,13 @@
+nomenclature to save in this folder
+<r><TEST_NAME> --> Means it is a regression test
+<c><TEST_NAME> --> Means it is a conformance test
+
+Example:
+ *Regression test
+    rPR1234_ResetRequerid.py
+    splited: r + main name + _ + detail + .extension
+
+
+ *Conformance test
+    cthreewayhandshake_nooptions.py
+    splited: c + main name + _ + detail + .extension

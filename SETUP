@@ -1,0 +1,26 @@
+== Requeriments ==
+ * Freebsd with ports installed (virtual machines are ok)
+ * Internet conection
+
+== Steps ==
+=== Download Sourcecode ===
+ 1. [[http://code.google.com/p/tcptest/downloads/list|Get latest release]]
+ 1. uncompress it
+
+=== Install pcs from port (packet construction set) ===
+ . #nonlinked Dependencies
+ . cd /usr/ports/net/py-pypcap
+ . make install clean
+
+ . #pcs
+ . cd /usr/ports/net/py-pcs
+ . make install
+
+  .  .  #Some merge from current
+  .  .  cd /usr/ports/net/py-pcs/work/pcs-0.5/pcs
+  .  .  patch < <PATH_TO_DOWNLOADED_SOURCE_CODE>/bilouro_tcptest/src/pcs/pcs.diff
+  .  .  cd /usr/ports/net/py-pcs/work/pcs-0.5
+  .  .  python setup.py config
+  .  .  python setup.py install
+
+=== Done ===

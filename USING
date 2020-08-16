@@ -1,0 +1,99 @@
+== Using tcptest ==
+=== Directories ===
+ . doc any doc file (rfc, source documentation)
+
+ . src any source file
+
+ . src/others some test driven development milestones
+
+ . src/pcs packet construction set from ports with some merges from current
+
+ . src/scripts any tcptest script
+
+ . src/scripts/fastners any script to call others in order to make it fast
+
+ . src/scripts/tests any unittest script (conformance or regression test)
+
+=== Script by script ===
+ . tcpconnect.py This script make three way handshake(3wh), it's a raw one-method script. It was the first functional file, made to understand the tcp/ip 3wh and connection finalization. Serveral prints on screen for a better following of packet exchanged.
+
+ . fasteners/tcpconnect.sh Calls tcpconnect with args.
+
+ . tests/cthreewayhandshake_nooptions.py tcpconnect.py adapted to unittest. Code was refactured, removed duplicated code, several methods acting as utils created.
+
+ . tests/c3waywithoutoptions.py first script using tcptest.py. Now code calls tcptest module, more readable and mature code.
+
+ . tests/tcptest.py tcptest module. (detailed in the next section)
+
+ . tests/csynbroadcast.py Sends a syn to ip broadcast addr, but to a specific MAC.
+
+ . tests/cresetfromclosedstate.py Establish a conn, set DUT to make active close, wait 2MSL, and inject syn with the same finalized sequence number. rst and fin are also tested.
+
+ . tests/cresetFromNonSyncState.py resetTcp created. tcptest.threewayhandshakenoopt created. (a)Make 3wh and then sends an out of window ack. (b)with connection established start active close and then sends an out of window ack
+
+ . tests/cresetFromSyncState.py (a)Send an out of order acknowledgment, without any previous messages. (b)send an out of order acknowledgment at SYN_RECEIVE DUT's status.
+
+=== tcptest module (main) ===
+
+ . assertAcknowledgmentPresent assert that ack_number is different from None and greater then 0.
+
+ . assertSequencePresent assert that sequence is different from None and greater then 0.
+
+ . assertExpectedSequence assert receive segments carries the expected sequence number.
+
+ . assertExpectedAcknowledgment assert receive segments carries the expected ack_number.
+
+ . assertSequenceAcknowledgmentOK calls assertAcknowledgmentPresent, assertSequencePresent, assertExpectedSequence, assertExpectedAcknowledgment
+
+ . assertSynPresent assert syn bit is set.
+
+ . assertReset assert rst bit is set.
+
+ . assertFin assert fin bit is set.
+
+ . createip create ip packet. Using tcb this method set all basic ip attributes automatically.
+
+ . createtcp create tcp segment (called by createip). Using tcb this method set all basic tcp attributes automatically.
+
+ . createethernet create ethernet frame.
+
+ . createwritepacket Calls (a)createethernet, set ip to ethernet packet and write bytes to network device.
+
+ . receive Receive packet for specific tcb.
+
+ . createsyn Calls create ip then set syn flag.
+
+ . createfin Calls create ip then set fin flag.
+
+ . createrstfromreceivedtcp Create and reset segment according rfc.
+
+ . createfakerstfromtcb Resets a not received segment.
+
+ . createoutofwindowack Create an ack out of current window.
+
+ . threewayhandshakenoopt Calls createsyn, createwritepacket(syn sent), receive(ack+syn), createip(ack)
+
+ . closeconnection Sends a fin, expect ack+fin(together or not) then send ack
+
+ . passivecloseconnection Expect a fin, send ack+fin and expect an ack.
+
+ . tcp_cksum  Calcs tcp check sum
+
+ . ip_cksum Calcs ip check sum
+
+=== DUT - The Device Under Test ===
+ . I'm using a virtual machine to make my tests, for both DUT and Testing Station. To make the testes I turned inetd server on as following:
+  1. uncomment following line, to start discard server. Its start a socket that discards every data received. port #9
+   . discard stream  tcp     nowait  root    internal
+  1. force inetd server start: /etc/rc.d/inetd forcestart
+
+=== Testing Station ===
+ . Machine where pcs and tcptest runs.  To make the tests we need set:
+  1. sysctl net.inet.tcp.blackhole=2
+  1. sysctl net.inet.tcp.log_debug=1 (useful to detect errors of packet creation, also ck_sum)
+
+=== Legends ===
+ . 3wh - Three way handshake
+ . DUT - Device Under Test
+ . Testing Station - where the tests are executed
+
